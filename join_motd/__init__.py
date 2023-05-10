@@ -106,11 +106,6 @@ def display_motd(server: ServerInterface, reply: Callable[[Union[str, RTextBase]
 		messages.append(RText('[{}]'.format(info.name), color=RColor.light_purple).h(hover_text).c(RAction.open_url, info.URL))
 	reply(RTextBase.join(' ', messages))		
 
-#	reply(RTextBase.join("", [RText("[复读百科] ", color = RColor.light_purple).h("点击前往复读百科！").c(RAction.open_url, "https://docs.qq.com/doc/DR0lJYVhWcGZUa0lk"),
-#	RText("[复读公约] ", color = RColor.light_purple).h("点击前往复读公约！").c(RAction.open_url, "https://docs.qq.com/doc/DR2lsTkNNS2ZURnBW"),
-#	RText("[指令使用说明] ", color = RColor.light_purple).h("点击查看使用说明！").c(RAction.open_url, "https://docs.qq.com/doc/DSFNXZFJ1ckpkZHhi"),
-#	RText("[旦星一号] ", color = RColor.light_purple).h("点击查看旦星一号传来的实时图像！").c(RAction.open_url, "http://mc.fdc.jingyijun.xyz:20410")]))
-
 	reply('§b在游玩复读世界的时候，请不要忘了阅读与更新复读百科哦~也请遵守复读公约的规定~§r')
 	
 def on_player_joined(server: ServerInterface, player, info):
