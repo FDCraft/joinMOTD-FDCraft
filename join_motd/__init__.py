@@ -46,6 +46,9 @@ class Config(Serializable):
 	webList: List[WebInfo] = [
 		WebInfo(name='MCDR文档', description='点击前往MCDR文档！', URL='https://mcdreforged.readthedocs.io/zh_CN/latest/')
 	]
+	announcements: List[str] = [
+		'§b在游玩复读世界的时候，请不要忘了阅读与更新复读百科哦~也请遵守复读公约的规定~§r'
+	]
 
 
 Prefix = '!!joinMOTD'
@@ -106,7 +109,9 @@ def display_motd(server: ServerInterface, reply: Callable[[Union[str, RTextBase]
 		messages.append(RText('[{}]'.format(info.name), color=RColor.light_purple).h(hover_text).c(RAction.open_url, info.URL))
 	reply(RTextBase.join(' ', messages))		
 
-	reply('§b在游玩复读世界的时候，请不要忘了阅读与更新复读百科哦~也请遵守复读公约的规定~§r')
+	for announment in config.announcements:
+		reply(announment)
+#	reply('§b在游玩复读世界的时候，请不要忘了阅读与更新复读百科哦~也请遵守复读公约的规定~§r')
 	
 def on_player_joined(server: ServerInterface, player, info):
 	display_motd(server, lambda msg: server.tell(player, msg))
