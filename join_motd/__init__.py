@@ -111,7 +111,6 @@ def display_motd(server: ServerInterface, reply: Callable[[Union[str, RTextBase]
 
 	for announment in config.announcements:
 		reply(announment)
-#	reply('§b在游玩复读世界的时候，请不要忘了阅读与更新复读百科哦~也请遵守复读公约的规定~§r')
 	
 def on_player_joined(server: ServerInterface, player, info):
 	display_motd(server, lambda msg: server.tell(player, msg))
