@@ -1,4 +1,5 @@
 import collections
+import json
 import os
 from datetime import datetime
 from typing import List, Optional, Callable, Any, Union, Dict
@@ -22,12 +23,6 @@ class WebInfo(Serializable):
 	URL: str = ''
 	description: Optional[str] = None
 
-	@classmethod
-	def from_object(cls, obj) -> 'WebInfo':
-		if isinstance(obj, cls):
-			return obj
-		return WebInfo(name=str(obj))	
-
 class Config(Serializable):
 	serverName: str = 'Survival Server'
 	mainServerName: str = 'My Server'
@@ -47,7 +42,9 @@ class Config(Serializable):
 		WebInfo(name='MCDR文档', description='点击前往MCDR文档！', URL='https://mcdreforged.readthedocs.io/zh_CN/latest/')
 	]
 	announcements: List[str] = [
-		'§b在游玩复读世界的时候，请不要忘了阅读与更新复读百科哦~也请遵守复读公约的规定~§r'
+		'§b在游玩复读世界的时候，请不要忘了阅读与更新复读百科哦~也请遵守复读公约的规定~§r',
+		'{\"text\":\"在游玩复读世界的时候，请不要忘了阅读与更新复读百科哦~也请遵守复读公约的规定~\", \"color\":\"blue\"}'
+		'[{\"text\":\"在游玩复读世界的时候，请不要忘了阅读与更新复读百科哦~也请遵守复读公约的规定~\", \"color\":\"blue\"}, {\"text\":\" 在游玩复读世界的时候，请不要忘了阅读与更新复读百科哦~也请遵守复读公约的规定~\", \"color\":\"blue\"}]'
 	]
 
 
@@ -55,6 +52,18 @@ Prefix = '!!joinMOTD'
 config: Config
 ConfigFilePath = os.path.join('config', 'joinMOTD.json')
 
+def to_message_text(message: str) -> Union[str, RTextBase]:
+	try:
+		json_object = json.loads(message)
+	except ValueError:
+		return message
+	if type(json_object) is list:
+		messages = []
+		for object in json_object:
+			messages.append(RTextBase.from_json_object(object))
+		return RTextBase.join(' ', messages)
+	else:
+		return RTextBase.from_json_object(json_object)
 
 def get_day(server: ServerInterface) -> str:
 	try:
@@ -110,7 +119,7 @@ def display_motd(server: ServerInterface, reply: Callable[[Union[str, RTextBase]
 	reply(RTextBase.join(' ', messages))		
 
 	for announment in config.announcements:
-		reply(announment)
+		reply(to_message_text(announment))
 	
 def on_player_joined(server: ServerInterface, player, info):
 	display_motd(server, lambda msg: server.tell(player, msg))

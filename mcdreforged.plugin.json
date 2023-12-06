@@ -1,6 +1,6 @@
 {
 	"id": "join_motd",
-	"version": "1.4.0",
+	"version": "1.4.1",
 	"name": "Join MOTD FDCraft Ver.",
 	"description": {
 		"en_us": "Send player a MOTD when he joins",
